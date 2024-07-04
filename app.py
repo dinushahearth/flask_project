@@ -10,7 +10,8 @@ def index():
 def submit():
     input1 = request.form.get('input1')
     input2 = request.form.get('input2')
-    return f"Input 1: {input1}, Input 2: {input2}"
+    input3 = request.form.get('input3')
+    return f"Input 1: {input1}, Input 2: {input2}, == input3 "
 
 if __name__ == '__main__':
     app.run(debug=True)
