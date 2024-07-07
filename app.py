@@ -1,6 +1,18 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+import pyodbc
 
 app = Flask(__name__)
+
+# Azure SQL Database configuration
+server = 'bdo-testing.database.windows.net'
+database = 'DB_login'
+username = 'bdo-global'
+password = 'dinusha@12'
+driver = '{ODBC Driver 17 for SQL Server}'
+
+# Establishing the connection
+connection = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)
+
 
 @app.route('/')
 def index():
@@ -10,8 +22,15 @@ def index():
 def submit():
     input1 = request.form.get('input1')
     input2 = request.form.get('input2')
-    input3 = request.form.get('input3')
-    return f"Input 1: {input1}, Input 2: {input2}, == input3 "
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO direct (id, name) VALUES (?, ?)", input1, input2)
+        connection.commit()
+        return jsonify({'message': 'Data stored successfully'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
