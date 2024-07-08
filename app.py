@@ -31,6 +31,26 @@ def submit():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/details', methods=['GET'])
+def data():
+    try:
+        cursor= connection.cursor()
+        cursor.execute("SELECT * FROM direct")
+        rows = cursor.fetchall()
+
+        data = []
+        for row in rows:
+            data.append({
+                'id': row.id,
+                'name': row.name
+            })
+
+        return render_template("details.html",data=data)
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
