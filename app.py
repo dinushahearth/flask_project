@@ -1,13 +1,21 @@
 from flask import Flask, render_template, request, jsonify
 import pyodbc
+import os
 
 app = Flask(__name__)
 
+# # Azure SQL Database configuration
+# server = 'bdo-testing.database.windows.net'
+# database = 'DB_login'
+# username = 'bdo-global'
+# password = 'dinusha@12'
+# driver = '{ODBC Driver 17 for SQL Server}'
+
 # Azure SQL Database configuration
-server = 'bdo-testing.database.windows.net'
-database = 'DB_login'
-username = 'bdo-global'
-password = 'dinusha@12'
+server = os.environ['server']
+database = os.environ['database']
+username =  os.environ['userN']
+password = os.environ['password']
 driver = '{ODBC Driver 17 for SQL Server}'
 
 # Establishing the connection
